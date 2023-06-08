@@ -41,7 +41,7 @@ scratch_folder = Path("../scratch")
 
 
 if __name__ == "__main__":
-    data_processes_folder = results_folder / "data_processes"
+    data_processes_folder = results_folder / "data_processes" / "spikesorting"
     data_processes_folder.mkdir(exist_ok=True)
 
     ####### SPIKESORTING ########
