@@ -40,15 +40,9 @@ results_folder = Path("../results")
 scratch_folder = Path("../scratch")
 
 
-
 if __name__ == "__main__":
     data_processes_folder = results_folder / "data_processes"
     data_processes_folder.mkdir(exist_ok=True)
-
-    # check if test
-    if (data_folder / "preprocessing_output_test").is_dir():
-        print("\n*******************\n**** TEST MODE ****\n*******************\n")
-        data_folder = data_folder / "preprocessing_output_test"
 
     ####### SPIKESORTING ########
     print("\n\nSPIKE SORTING")
@@ -61,7 +55,13 @@ if __name__ == "__main__":
 
     datetime_start_sorting = datetime.now()
     t_sorting_start = time.perf_counter()
-    preprocessed_folder = data_folder / "preprocessed"
+
+    # check if test
+    if (data_folder / "preprocessing_output_test").is_dir():
+        print("\n*******************\n**** TEST MODE ****\n*******************\n")
+        preprocessed_folder = data_folder / "preprocessing_output_test" / "preprocessed"
+    else:
+        preprocessed_folder = data_folder / "preprocessed"
 
     # try results here
     spikesorted_raw_output_folder = scratch_folder / "spikesorted_raw"
