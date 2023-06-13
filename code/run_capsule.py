@@ -104,7 +104,7 @@ if __name__ == "__main__":
         sorting = sorting.remove_empty_units()
         # remove spikes beyond num_Samples (if any)
         sorting = sc.remove_excess_spikes(sorting=sorting, recording=recording)
-        n_non_empty_units = int(len(sorting))
+        n_non_empty_units = int(len(sorting.unit_ids))
         n_empty_units = n_original_units - n_non_empty_units
 
         print(f"\tSorting output without empty units: {sorting}")
