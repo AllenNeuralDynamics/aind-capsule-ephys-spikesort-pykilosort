@@ -46,7 +46,6 @@ if __name__ == "__main__":
 
     ####### SPIKESORTING ########
     print("\n\nSPIKE SORTING")
-    spikesorting_notes = ""
     sorting_params = None
 
     print(f"PyKilosort version: {pykilosort.__version__}")
@@ -69,9 +68,11 @@ if __name__ == "__main__":
         print("'preprocessed' folder not found. Exiting")
         sys.exit(1)
 
-    for recording_folder in preprocessed_folder.iterdir():
+    preprocessed_recording_folders = [p for p in preprocessed_folder.iterdir() if p.is_dir()]
+    for recording_folder in preprocessed_recording_folders:
         datetime_start_sorting = datetime.now()
         t_sorting_start = time.perf_counter()
+        spikesorting_notes = ""
 
         recording_name = recording_folder.name
         sorting_output_folder = results_folder / "spikesorted" / recording_name
@@ -94,7 +95,8 @@ if __name__ == "__main__":
             sorting_output_folder.mkdir()
             shutil.copy(spikesorted_raw_output_folder / "spikeinterface_log.json", sorting_output_folder)
         print(f"\tRaw sorting output: {sorting}")
-        spikesorting_notes += f"{recording_name}:\n- KS2.5 found {len(sorting.unit_ids)} units, "
+        n_original_units = int(len(sorting.unit_ids))
+        spikesorting_notes += f"\n- KS2.5 found {n_original_units} units, "
         if sorting_params is None:
             sorting_params = sorting.sorting_info["params"]
 
@@ -102,6 +104,9 @@ if __name__ == "__main__":
         sorting = sorting.remove_empty_units()
         # remove spikes beyond num_Samples (if any)
         sorting = sc.remove_excess_spikes(sorting=sorting, recording=recording)
+        n_non_empty_units = int(len(sorting))
+        n_empty_units = n_original_units - n_non_empty_units
+
         print(f"\tSorting output without empty units: {sorting}")
         spikesorting_notes += f"{len(sorting.unit_ids)} after removing empty templates.\n"
         
@@ -117,6 +122,9 @@ if __name__ == "__main__":
         elapsed_time_sorting = np.round(t_sorting_end - t_sorting_start, 2)
     
         # save params in output
+        sorting_outputs = dict(
+            empty_units=n_empty_units
+        )
         spikesorting_process = DataProcess(
                 name="Spike sorting",
                 version=VERSION, # either release or git commit
@@ -126,6 +134,7 @@ if __name__ == "__main__":
                 output_location=str(results_folder),
                 code_url=URL,
                 parameters=sorting_params,
+                outputs=sorting_outputs,
                 notes=spikesorting_notes
             )
         with open(sorting_output_process_json, "w") as f:
