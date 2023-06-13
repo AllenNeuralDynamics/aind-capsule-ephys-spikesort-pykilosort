@@ -52,9 +52,7 @@ if __name__ == "__main__":
     print(f"PyKilosort version: {pykilosort.__version__}")
 
     si.set_global_job_kwargs(**job_kwargs)
-
-    datetime_start_sorting = datetime.now()
-    t_sorting_start = time.perf_counter()
+    t_sorting_start_all = time.perf_counter()
 
     # check if test
     if (data_folder / "preprocessing_output_test").is_dir():
@@ -72,6 +70,9 @@ if __name__ == "__main__":
         sys.exit(1)
 
     for recording_folder in preprocessed_folder.iterdir():
+        datetime_start_sorting = datetime.now()
+        t_sorting_start = time.perf_counter()
+
         recording_name = recording_folder.name
         sorting_output_folder = results_folder / "spikesorted" / recording_name
         sorting_output_process_json = data_processes_folder / f"spikesorting_{recording_name}.json"
@@ -111,6 +112,9 @@ if __name__ == "__main__":
         # save results 
         print(f"\tSaving results to {sorting_output_folder}")
         sorting = sorting.save(folder=sorting_output_folder)
+
+        t_sorting_end = time.perf_counter()
+        elapsed_time_sorting = np.round(t_sorting_end - t_sorting_start, 2)
     
         # save params in output
         spikesorting_process = DataProcess(
@@ -127,11 +131,9 @@ if __name__ == "__main__":
         with open(sorting_output_process_json, "w") as f:
             f.write(spikesorting_process.json(indent=3))
 
-    t_sorting_end = time.perf_counter()
-    elapsed_time_sorting = np.round(t_sorting_end - t_sorting_start, 2)
-        
-    
-    print(f"SPIKE SORTING time: {elapsed_time_sorting}s")
+    t_sorting_end_all = time.perf_counter()
+    elapsed_time_sorting_all = np.round(t_sorting_end_all - t_sorting_start_all, 2)
+    print(f"SPIKE SORTING time: {elapsed_time_sorting_all}s")
 
 
 
