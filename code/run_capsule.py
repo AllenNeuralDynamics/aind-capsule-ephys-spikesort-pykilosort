@@ -112,25 +112,23 @@ if __name__ == "__main__":
         print(f"\tSaving results to {sorting_output_folder}")
         sorting = sorting.save(folder=sorting_output_folder)
     
+        # save params in output
+        spikesorting_process = DataProcess(
+                name="Spike sorting",
+                version=VERSION, # either release or git commit
+                start_date_time=datetime_start_sorting,
+                end_date_time=datetime_start_sorting + timedelta(seconds=np.floor(elapsed_time_sorting)),
+                input_location=str(data_folder),
+                output_location=str(results_folder),
+                code_url=URL,
+                parameters=sorting_params,
+                notes=spikesorting_notes
+            )
+        with open(sorting_output_process_json, "w") as f:
+            f.write(spikesorting_process.json(indent=3))
 
     t_sorting_end = time.perf_counter()
     elapsed_time_sorting = np.round(t_sorting_end - t_sorting_start, 2)
-
-    # save params in output
-    sorting_params["recording_name"] = recording_name
-    spikesorting_process = DataProcess(
-            name="Spike sorting",
-            version=VERSION, # either release or git commit
-            start_date_time=datetime_start_sorting,
-            end_date_time=datetime_start_sorting + timedelta(seconds=np.floor(elapsed_time_sorting)),
-            input_location=str(data_folder),
-            output_location=str(results_folder),
-            code_url=URL,
-            parameters=sorting_params,
-            notes=spikesorting_notes
-        )
-    with open(sorting_output_process_json, "w") as f:
-        f.write(spikesorting_process.json(indent=3))
         
     
     print(f"SPIKE SORTING time: {elapsed_time_sorting}s")
