@@ -1,5 +1,5 @@
-# hash:sha256:3742ae802613fdd4ca25f4d73c751a700b6d298f430fbc28a21e4b9cd4fd72b5
-FROM registry.codeocean.allenneuraldynamics.org/codeocean/pykilosort-base:1.4.3
+# hash:sha256:3a679cfb5e222ee76dc8ff657a3069fd09c0e237973228e54d8dbe7b55909d03
+FROM registry.codeocean.allenneuraldynamics.org/codeocean/pykilosort-base:1.4.3.1
 
 ARG DEBIAN_FRONTEND=noninteractive
 
