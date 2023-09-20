@@ -8,8 +8,8 @@ import numpy as np
 from pathlib import Path
 import shutil
 import json
-import sys
 import time
+from pprint import pprint
 from datetime import datetime, timedelta
 
 # SPIKEINTERFACE
@@ -119,7 +119,7 @@ if __name__ == "__main__":
             shutil.copy(spikesorted_raw_output_folder  / recording_name / "spikeinterface_log.json", sorting_output_folder)
             with open(sorting_output_folder / "spikeinterface_log.json", "r") as f:
                 log = json.load(f)
-            print(log)
+            pprint(log)
             sorting_outputs = dict()
 
         t_sorting_end = time.perf_counter()
