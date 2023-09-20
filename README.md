@@ -1,4 +1,4 @@
-# Spike sort with pyKilosort for AIND ephys pipeline
+# Spike sorting with pyKilosort for AIND ephys pipeline
 ## aind-capsule-ephys-spikesort-pykilosort
 
 
