@@ -21,7 +21,6 @@ import spikeinterface.curation as sc
 import pykilosort
 
 # AIND
-from aind_data_schema import Processing
 from aind_data_schema.processing import DataProcess
 
 # LOCAL
