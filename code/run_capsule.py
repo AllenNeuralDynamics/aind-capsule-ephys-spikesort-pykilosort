@@ -26,7 +26,7 @@ import pykilosort
 from aind_data_schema.core.processing import DataProcess
 
 # LOCAL
-URL = "https://github.com/AllenNeuralDynamics/aind-capsule-ephys-spikesort-pykilosort"
+URL = "https://github.com/AllenNeuralDynamics/aind-ephys-spikesort-pykilosort"
 VERSION = "0.1.0"
 
 SORTER_NAME = "pykilosort"
